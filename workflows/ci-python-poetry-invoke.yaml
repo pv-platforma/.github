@@ -55,6 +55,12 @@ jobs:
       # Test.
       - name: Run the unit tests
         run: poetry run invoke test
+      - name: Report coverage to coveralls.io
+        run: poetry run coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_HOST: ${{ secrets.COVERALLS_HOST }}
+          COVERALLS_SERVICE_NAME: ${{ secrets.COVERALLS_SERVICE_NAME }}
 
       # Dist.
       - name: Build packages
