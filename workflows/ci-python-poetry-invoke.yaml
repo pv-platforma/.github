@@ -14,6 +14,7 @@ on:
 
 env:
   AWS_CODEARTIFACT_DOMAIN: pv-platforma
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   POETRY_HTTP_BASIC_PV_PLATFORMA_USERNAME: aws
 
 jobs:
@@ -21,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2.1.4
         with:
           python-version: 3.8
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2.1.3
         with:
           path: .venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
@@ -77,18 +78,13 @@ jobs:
         run: poetry run invoke test
       - name: Report coverage to coveralls.io
         run: poetry run coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_HOST: ${{ secrets.COVERALLS_HOST }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          COVERALLS_SERVICE_NAME: ${{ secrets.COVERALLS_SERVICE_NAME }}
 
       # Dist.
       - name: Build packages
         run: poetry build
       - name: Upload artifacts for release
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2.2.1
         with:
           name: wheel
           path: dist/
@@ -100,10 +96,10 @@ jobs:
       - ci
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2.1.4
         with:
           python-verion: 3.8
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2.1.3
         with:
           path: .venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
@@ -126,13 +122,13 @@ jobs:
           --query authorizationToken
           --output text)"
           >> $GITHUB_ENV
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2.0.6
         with:
           name: wheel
           path: dist/
       - name: Get latest Changelog Entry
         id: changelog_entry
-        uses: mindsers/changelog-reader-action@v1.1.0
+        uses: mindsers/changelog-reader-action@v2
       - name: Publish the release
         uses: softprops/action-gh-release@v1
         env:
@@ -142,7 +138,7 @@ jobs:
           files: |
             dist/*
       # Only for public projects.
-      #  - uses: actions/download-artifact@v1
+      #  - uses: actions/download-artifact@v2.0.6
       #   with:
       #     name: docs
       #     path: docs/build/html
