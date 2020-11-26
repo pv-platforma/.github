@@ -50,4 +50,6 @@ We're here to help!
 Place the URL of the issue here if this PR fixes an existing issue.
 Use either the `username/repository#` syntax (preferred) or the *FULL* URL.
 -->
-Fixes: pv-platforma/<pv_project>#
+Fixes:
+
+Requested Reviewers: @pv-platforma/platforma

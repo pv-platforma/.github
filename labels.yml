@@ -87,6 +87,9 @@ labels:
   - name: "status/duplicate"
     color: "#D2DAE1"
     description: "This issue or pull request already exists"
+  - name: "status/review-carefully!"
+    color: "#B60205"
+    description: "Requires extra attention during review"
 
   # Environment.
   - name: "environment/dev"
